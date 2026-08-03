@@ -1,0 +1,191 @@
+{
+  "years": [
+    {
+      "year": 2026,
+      "projects": [
+        {
+          "id": "nl-to-sql",
+          "name": "Natural Language to SQL",
+          "organization": "University of Minnesota",
+          "duration": "6 Months",
+          "tech": [
+            "Python",
+            "React",
+            "Azure AI Foundry",
+            "Azure Application Insights",
+            "Azure DevOps",
+            "Azure App Service",
+            "Azure Static Web App"
+          ],
+          "achievements": [
+            "Designed and implemented multi-agent workflows to improve consistency and reliability.",
+            "Helped define the overall workflow architecture and implemented structured outputs.",
+            "Implemented monitoring and observability using Azure Application Insights.",
+            "Added CI/CD pipelines to deploy UI/API to Azure.",
+            "Built a custom LLM-as-a-judge evaluation framework to assess generated SQL."
+          ]
+        },
+        {
+          "id": "library-management-saas",
+          "name": "Library Management SaaS",
+          "organization": "Personal Project",
+          "duration": null,
+          "tech": [
+            ".NET 10",
+            "ASP.NET Core",
+            "Razor Pages",
+            "PostgreSQL",
+            "EF Core",
+            "pgvector",
+            "Azure OpenAI",
+            "Azure AI Foundry",
+            "Hangfire",
+            "Azure Storage"
+          ],
+          "achievements": [
+            "Modular monolith in ASP.NET Core (.NET 10) with isolated EF Core DbContexts.",
+            "AI-powered semantic book search using Azure OpenAI embeddings.",
+            "Self-service kiosk module with custom JWT device-auth middleware.",
+            "Hangfire background job worker handling embedding generation and email delivery.",
+            "Azure Blob Storage for book assets, EAN-13 barcode generation, subscription-based feature gating."
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "projects": [
+        {
+          "id": "location-based-access-restrictions",
+          "name": "Location-Based Access Restrictions",
+          "organization": "CH Robinson",
+          "duration": "3 Months",
+          "tech": [".NET", "C#", "Node.js", "ElasticSearch", "React", "Kafka"],
+          "achievements": [
+            "Collaborated with backend team to design data models determining user permissions.",
+            "Adjusted ElasticSearch queries to support location-based filtering logic.",
+            "Contributed to integration testing and validation of restriction rules."
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "projects": [
+        {
+          "id": "custom-filters-and-identifiers",
+          "name": "Custom Filters and Identifiers",
+          "organization": "CH Robinson",
+          "duration": "12 Months",
+          "tech": [".NET", "C#", "Node.js", "ElasticSearch", "React", "Kafka", "MongoDB"],
+          "achievements": [
+            "Contributed to React components enabling administrators to create custom filters.",
+            "Developed backend functionality to store filters in MongoDB.",
+            "Contributed to ElasticSearch aggregations/queries for orders and shipments.",
+            "Migrated legacy gateway API from .NET Framework 4.6.2 to .NET 8.0."
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "projects": [
+        {
+          "id": "user-onboarding-csv",
+          "name": "User Permissions and Notification Setup via CSV",
+          "organization": "CH Robinson",
+          "duration": "2 Months",
+          "tech": [".NET", "C#"],
+          "achievements": [
+            "Independently designed and developed console application automating user onboarding.",
+            "Integrated environment-specific settings ensuring consistent behavior.",
+            "Leveraged libraries to provide progress feedback and improve CLI experience.",
+            "Ensured robust error handling and data validation for batch processing."
+          ]
+        },
+        {
+          "id": "orders-search-uplift",
+          "name": "Orders Search Uplift",
+          "organization": "CH Robinson",
+          "duration": "12 Months",
+          "tech": [".NET", "C#", "Node.js", "ElasticSearch", "React", "Kafka"],
+          "achievements": [
+            "Contributed to modernizing the Orders Search experience.",
+            "Developed several React components enhancing search page UI.",
+            "Participated in integrating map-based views of order data.",
+            "Helped implement new filter capabilities on backend.",
+            "Developed guided tour feature for onboarding users to new features."
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "projects": [
+        {
+          "id": "identityserver-integration",
+          "name": "IdentityServer Integration",
+          "organization": "Benafica",
+          "duration": "3 Months",
+          "tech": [".NET", "C#", "IdentityServer4", "JWT"],
+          "achievements": [
+            "Integrated IdentityServer4 into legacy system enabling OAuth 2.0 and OpenID.",
+            "Secured newly developed API with JWT bearer token authorization.",
+            "Defined client configurations, scopes, and claims for identity management."
+          ]
+        },
+        {
+          "id": "homeschooling-application",
+          "name": "Homeschooling Application",
+          "organization": "Personal Project",
+          "duration": "6 Months",
+          "tech": [
+            "Angular",
+            "Azure Functions",
+            "Azure Data Tables",
+            "GitHub Actions",
+            "Azure Static Web App",
+            "Azure Storage"
+          ],
+          "achievements": [
+            "Built Angular SPA to share resources among homeschooling families.",
+            "Developed event scheduling and communication features.",
+            "Utilized Azure Data Tables for storage and GitHub Actions for CI/CD."
+          ]
+        },
+        {
+          "id": "bing-maps-to-azure-maps",
+          "name": "Migration from Bing Maps to Azure Maps",
+          "organization": "CH Robinson",
+          "duration": "6 Months",
+          "tech": [".NET", "C#", "Node.js", "ElasticSearch", "React", "Terraform", "Azure Maps"],
+          "achievements": [
+            "Collaborated on mapping services migration enhancing performance.",
+            "Implemented SAS authentication for Azure Maps significantly improving load times.",
+            "Worked with ElasticSearch to support geospatial queries.",
+            "Built React components for visualizing shipments and orders.",
+            "Supported infrastructure provisioning using Terraform."
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "projects": [
+        {
+          "id": "benngihealth",
+          "name": "BenngiHealth",
+          "organization": "Benafica",
+          "duration": "1.5 Years",
+          "tech": [".NET", "C#", "Microsoft SQL", "Xamarin Forms", "EF Core", "Dapper", "xUnit"],
+          "achievements": [
+            "Collaborated with CEO and designer to gather requirements and define priorities.",
+            "Designed and implemented RESTful APIs in .NET using EF Core and Dapper.",
+            "Built and published cross-platform mobile application for Android and iOS.",
+            "Managed end-to-end deployment through Google Play Store and Apple App Store."
+          ]
+        }
+      ]
+    }
+  ]
+}
