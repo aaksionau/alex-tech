@@ -6,9 +6,11 @@
   /** @type {{ roles: import('../lib/systemPrompt.js').Role[], years: import('../lib/systemPrompt.js').YearGroup[] }} */
   let { roles, years } = $props();
 
-  /** @type {'idle' | 'connecting' | 'active' | 'ended' | 'error'} */
+  /** @type {'idle' | 'connecting' | 'active' | 'ended' | 'error' | 'capped'} */
   let status = $state('idle');
   let errorMessage = $state('');
+  let cappedMessage = $state('');
+  let timeLimitReached = $state(false);
   let muted = $state(false);
   let userSpeaking = $state(false);
   let assistantSpeaking = $state(false);
@@ -27,6 +29,10 @@
   let audioEl = null;
   let stopUserMeter = () => {};
   let stopAssistantMeter = () => {};
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  let sessionTimeout = null;
+
+  const DEFAULT_MAX_SESSION_SECONDS = 180;
 
   /**
    * @param {MediaStream} stream
@@ -121,6 +127,10 @@
   }
 
   function endSession() {
+    if (sessionTimeout !== null) {
+      clearTimeout(sessionTimeout);
+      sessionTimeout = null;
+    }
     stopUserMeter();
     stopAssistantMeter();
     stopUserMeter = () => {};
@@ -141,6 +151,8 @@
   async function startSession() {
     status = 'connecting';
     errorMessage = '';
+    cappedMessage = '';
+    timeLimitReached = false;
     transcript = [];
 
     try {
@@ -151,10 +163,19 @@
       return;
     }
 
-    /** @type {{ value: string, expiresAt: number, endpoint: string, deployment: string, region: string }} */
+    /** @type {{ value: string, expiresAt: number, endpoint: string, deployment: string, region: string, maxSessionSeconds?: number }} */
     let session;
     try {
       const response = await fetch('/api/realtime-session', { method: 'POST' });
+      if (response.status === 429) {
+        const body = await response.json().catch(() => ({}));
+        status = 'capped';
+        cappedMessage =
+          body.message ??
+          "You've reached today's limit for live conversations — check back tomorrow, or browse the Experience/Projects pages.";
+        stopLocalStream();
+        return;
+      }
       if (!response.ok) throw new Error('Failed to reach the voice session service.');
       session = await response.json();
     } catch (err) {
@@ -203,6 +224,13 @@
         }),
       );
       status = 'active';
+      sessionTimeout = setTimeout(
+        () => {
+          timeLimitReached = true;
+          endSession();
+        },
+        (session.maxSessionSeconds ?? DEFAULT_MAX_SESSION_SECONDS) * 1000,
+      );
     });
 
     dc.addEventListener('message', (event) => handleServerEvent(event.data));
@@ -263,6 +291,16 @@
       <span class="text-sm text-(--color-muted)">Connecting…</span>
     {/if}
 
+    {#if status === 'capped'}
+      <p class="text-sm text-(--color-muted)">
+        {cappedMessage} Browse
+        <a href="/experience" class="text-(--color-accent) underline underline-offset-2 hover:opacity-80">Experience</a>
+        or
+        <a href="/projects" class="text-(--color-accent) underline underline-offset-2 hover:opacity-80">Projects</a>
+        instead.
+      </p>
+    {/if}
+
     {#if status === 'active'}
       <button
         type="button"
@@ -285,6 +323,12 @@
 
   {#if status === 'error'}
     <p class="text-sm text-red-400">{errorMessage}</p>
+  {/if}
+
+  {#if status === 'ended' && timeLimitReached}
+    <p class="text-sm text-(--color-muted)">
+      This conversation reached the 3-minute time limit. Start a new conversation to keep talking.
+    </p>
   {/if}
 
   {#if status === 'active'}

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Api.RateLimiting;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
@@ -10,24 +11,45 @@ namespace Api;
 
 public class RealtimeSessionFunction
 {
+    /// <summary>Max realtime conversation length; enforced client-side once connected, since the
+    /// browser talks WebRTC directly to Azure AI Foundry and this Function never sees the media stream.</summary>
+    public const int MaxSessionSeconds = 180;
+
     private readonly ILogger<RealtimeSessionFunction> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly SessionRateLimiter _rateLimiter;
 
     public RealtimeSessionFunction(
         ILogger<RealtimeSessionFunction> logger,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        SessionRateLimiter rateLimiter)
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _rateLimiter = rateLimiter;
     }
 
     [Function("realtime-session")]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "realtime-session")] HttpRequestData req)
     {
+        var clientIp = GetClientIp(req);
+        var decision = await _rateLimiter.EvaluateAsync(clientIp);
+        if (!decision.Allowed)
+        {
+            _logger.LogWarning("Realtime session request capped for {ClientIp}: {Reason}", clientIp, decision.Reason);
+            var cappedResponse = req.CreateResponse((HttpStatusCode)429);
+            await cappedResponse.WriteAsJsonAsync(new
+            {
+                error = "capped",
+                message = "You've reached today's limit for live conversations — check back tomorrow, or browse the Experience/Projects pages.",
+            });
+            return cappedResponse;
+        }
+
         var endpoint = _configuration["Foundry:Endpoint"];
         var apiKey = _configuration["Foundry:ApiKey"];
         var deployment = _configuration["Foundry:Deployment"] ?? "gpt-realtime-mini";
@@ -81,8 +103,27 @@ public class RealtimeSessionFunction
             deployment,
             // The WebRTC connect URL is a region-specific host (<region>.realtimeapi-preview.ai.azure.com),
             // independent of the Foundry resource's own endpoint, so the client needs it separately.
-            region
+            region,
+            maxSessionSeconds = MaxSessionSeconds
         });
         return response;
+    }
+
+    /// <summary>
+    /// Azure Static Web Apps / Functions front doors set X-Forwarded-For to "client, proxy1, proxy2...";
+    /// the first entry is the original client.
+    /// </summary>
+    private static string GetClientIp(HttpRequestData req)
+    {
+        if (req.Headers.TryGetValues("X-Forwarded-For", out var forwardedFor))
+        {
+            var first = forwardedFor.FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(first))
+            {
+                return first.Split(',')[0].Trim();
+            }
+        }
+
+        return "unknown";
     }
 }
