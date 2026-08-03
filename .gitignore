@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# .NET / Azure Functions
+api/bin/
+api/obj/
+api/local.settings.json
+
