@@ -1,43 +1,39 @@
-# Astro Starter Kit: Minimal
+# alex-tech
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Personal site: Astro frontend + Azure Static Web Apps, with a C# Azure Functions API and an
+Azure AI Foundry-backed voice bot ("talk to my virtual self") planned in later issues.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Stack
 
-## 🚀 Project Structure
+- **Frontend**: Astro (static output), TypeScript, Tailwind CSS v4, Svelte islands, MDX/content
+  collections
+- **Hosting**: Azure Static Web Apps, deployed via GitHub Actions on push to `main`, with PR
+  preview environments
+- **API** (planned): Azure Functions, C# isolated worker, in `/api`
+- **Voice bot** (planned): Azure AI Foundry realtime model (`gpt-realtime-mini`)
 
-Inside of your Astro project, you'll see the following folders and files:
+## Commands
+
+| Command           | Action                                      |
+| :----------------- | :------------------------------------------ |
+| `npm install`       | Install dependencies                        |
+| `npm run dev`       | Start local dev server at `localhost:4321`  |
+| `npm run build`     | Build the production site to `./dist/`      |
+| `npm run preview`   | Preview the build locally before deploying  |
+
+## Project structure
 
 ```text
 /
 ├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/     # Svelte/Astro components
+│   ├── content/         # MDX content collections (blog, ...)
+│   ├── layouts/
+│   ├── pages/            # file-based routes
+│   └── styles/            # design tokens, global CSS
+├── content.config.ts
+└── astro.config.mjs
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+See the tracked issues in this repo for the full roadmap.
