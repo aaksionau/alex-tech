@@ -28,23 +28,26 @@ public sealed class SessionRateLimiter
 
     /// <summary>
     /// Records an attempted session for <paramref name="clientIp"/> and reports whether it's allowed.
-    /// Counters are incremented regardless of outcome so repeated attempts by a capped-out client
-    /// don't need to be tracked separately.
+    /// Checks run in order and stop at the first exceeded cap, so a client already denied by its own
+    /// IP quota never consumes site-wide quota too.
     /// </summary>
     public async Task<RateLimitDecision> EvaluateAsync(string clientIp, CancellationToken cancellationToken = default)
     {
         var partitionKey = _timeProvider.GetUtcNow().UtcDateTime.ToString("yyyy-MM-dd");
 
-        var ipCount = await _store.IncrementAsync(partitionKey, IpRowKeyPrefix + clientIp, cancellationToken);
-        if (ipCount > _perIpDailyCap)
+        var caps = new (string RowKey, int Cap, RateLimitReason Reason)[]
         {
-            return RateLimitDecision.Deny(RateLimitReason.PerIpCapExceeded);
-        }
+            (IpRowKeyPrefix + clientIp, _perIpDailyCap, RateLimitReason.PerIpCapExceeded),
+            (SiteWideRowKey, _siteWideDailyCap, RateLimitReason.SiteWideCapExceeded),
+        };
 
-        var siteCount = await _store.IncrementAsync(partitionKey, SiteWideRowKey, cancellationToken);
-        if (siteCount > _siteWideDailyCap)
+        foreach (var (rowKey, cap, reason) in caps)
         {
-            return RateLimitDecision.Deny(RateLimitReason.SiteWideCapExceeded);
+            var count = await _store.IncrementAsync(partitionKey, rowKey, cancellationToken);
+            if (count > cap)
+            {
+                return RateLimitDecision.Deny(reason);
+            }
         }
 
         return RateLimitDecision.Allow();

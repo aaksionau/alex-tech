@@ -13,26 +13,34 @@ public sealed class TableUsageCounterStore : IUsageCounterStore
     private const string TableName = "SessionUsageCounters";
     private const string CountPropertyName = "Count";
 
-    private readonly TableClient _tableClient;
+    private readonly TableServiceClient _serviceClient;
+    private readonly Lazy<Task<TableClient>> _tableClient;
 
     public TableUsageCounterStore(IConfiguration configuration)
     {
         var connectionString = configuration["AzureWebJobsStorage"]
             ?? throw new InvalidOperationException("AzureWebJobsStorage is not configured.");
 
-        var serviceClient = new TableServiceClient(connectionString);
-        serviceClient.CreateTableIfNotExists(TableName);
-        _tableClient = serviceClient.GetTableClient(TableName);
+        _serviceClient = new TableServiceClient(connectionString);
+        _tableClient = new Lazy<Task<TableClient>>(EnsureTableExistsAsync);
+    }
+
+    private async Task<TableClient> EnsureTableExistsAsync()
+    {
+        await _serviceClient.CreateTableIfNotExistsAsync(TableName);
+        return _serviceClient.GetTableClient(TableName);
     }
 
     public async Task<long> IncrementAsync(string partitionKey, string rowKey, CancellationToken cancellationToken = default)
     {
+        var tableClient = await _tableClient.Value;
+
         while (true)
         {
             TableEntity? existing;
             try
             {
-                var response = await _tableClient.GetEntityAsync<TableEntity>(partitionKey, rowKey, cancellationToken: cancellationToken);
+                var response = await tableClient.GetEntityAsync<TableEntity>(partitionKey, rowKey, cancellationToken: cancellationToken);
                 existing = response.Value;
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
@@ -45,7 +53,7 @@ public sealed class TableUsageCounterStore : IUsageCounterStore
                 var newEntity = new TableEntity(partitionKey, rowKey) { [CountPropertyName] = 1L };
                 try
                 {
-                    await _tableClient.AddEntityAsync(newEntity, cancellationToken);
+                    await tableClient.AddEntityAsync(newEntity, cancellationToken);
                     return 1;
                 }
                 catch (RequestFailedException ex) when (ex.Status == 409)
@@ -59,7 +67,7 @@ public sealed class TableUsageCounterStore : IUsageCounterStore
             existing[CountPropertyName] = next;
             try
             {
-                await _tableClient.UpdateEntityAsync(existing, existing.ETag, TableUpdateMode.Replace, cancellationToken);
+                await tableClient.UpdateEntityAsync(existing, existing.ETag, TableUpdateMode.Replace, cancellationToken);
                 return next;
             }
             catch (RequestFailedException ex) when (ex.Status == 412)

@@ -6,11 +6,10 @@
   /** @type {{ roles: import('../lib/systemPrompt.js').Role[], years: import('../lib/systemPrompt.js').YearGroup[] }} */
   let { roles, years } = $props();
 
-  /** @type {'idle' | 'connecting' | 'active' | 'ended' | 'error' | 'capped'} */
+  /** @type {'idle' | 'connecting' | 'active' | 'ended' | 'timed-out' | 'error' | 'capped'} */
   let status = $state('idle');
   let errorMessage = $state('');
   let cappedMessage = $state('');
-  let timeLimitReached = $state(false);
   let muted = $state(false);
   let userSpeaking = $state(false);
   let assistantSpeaking = $state(false);
@@ -31,8 +30,6 @@
   let stopAssistantMeter = () => {};
   /** @type {ReturnType<typeof setTimeout> | null} */
   let sessionTimeout = null;
-
-  const DEFAULT_MAX_SESSION_SECONDS = 180;
 
   /**
    * @param {MediaStream} stream
@@ -145,14 +142,13 @@
     userSpeaking = false;
     assistantSpeaking = false;
     muted = false;
-    if (status !== 'error') status = 'ended';
+    if (status === 'active' || status === 'connecting') status = 'ended';
   }
 
   async function startSession() {
     status = 'connecting';
     errorMessage = '';
     cappedMessage = '';
-    timeLimitReached = false;
     transcript = [];
 
     try {
@@ -163,17 +159,20 @@
       return;
     }
 
-    /** @type {{ value: string, expiresAt: number, endpoint: string, deployment: string, region: string, maxSessionSeconds?: number }} */
+    /** @type {{ value: string, expiresAt: number, endpoint: string, deployment: string, region: string, maxSessionSeconds: number }} */
     let session;
     try {
       const response = await fetch('/api/realtime-session', { method: 'POST' });
       if (response.status === 429) {
-        const body = await response.json().catch(() => ({}));
-        status = 'capped';
-        cappedMessage =
-          body.message ??
-          "You've reached today's limit for live conversations — check back tomorrow, or browse the Experience/Projects pages.";
+        const body = await response.json().catch(() => null);
         stopLocalStream();
+        if (body?.message) {
+          status = 'capped';
+          cappedMessage = body.message;
+        } else {
+          status = 'error';
+          errorMessage = 'The voice bot has reached its usage limit for today.';
+        }
         return;
       }
       if (!response.ok) throw new Error('Failed to reach the voice session service.');
@@ -224,18 +223,15 @@
         }),
       );
       status = 'active';
-      sessionTimeout = setTimeout(
-        () => {
-          timeLimitReached = true;
-          endSession();
-        },
-        (session.maxSessionSeconds ?? DEFAULT_MAX_SESSION_SECONDS) * 1000,
-      );
+      sessionTimeout = setTimeout(() => {
+        endSession();
+        status = 'timed-out';
+      }, session.maxSessionSeconds * 1000);
     });
 
     dc.addEventListener('message', (event) => handleServerEvent(event.data));
     dc.addEventListener('close', () => {
-      if (status !== 'error') status = 'ended';
+      if (status === 'active' || status === 'connecting') status = 'ended';
     });
 
     try {
@@ -277,13 +273,13 @@
   </div>
 
   <div class="flex flex-wrap items-center gap-4">
-    {#if status === 'idle' || status === 'ended' || status === 'error'}
+    {#if status === 'idle' || status === 'ended' || status === 'timed-out' || status === 'error'}
       <button
         type="button"
         onclick={startSession}
         class="rounded-full bg-(--color-accent) px-5 py-2 text-sm font-semibold text-(--color-accent-foreground) hover:opacity-90"
       >
-        {status === 'ended' ? 'Start a new conversation' : 'Start conversation'}
+        {status === 'ended' || status === 'timed-out' ? 'Start a new conversation' : 'Start conversation'}
       </button>
     {/if}
 
@@ -325,7 +321,7 @@
     <p class="text-sm text-red-400">{errorMessage}</p>
   {/if}
 
-  {#if status === 'ended' && timeLimitReached}
+  {#if status === 'timed-out'}
     <p class="text-sm text-(--color-muted)">
       This conversation reached the 3-minute time limit. Start a new conversation to keep talking.
     </p>

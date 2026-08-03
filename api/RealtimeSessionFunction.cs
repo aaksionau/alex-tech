@@ -109,21 +109,9 @@ public class RealtimeSessionFunction
         return response;
     }
 
-    /// <summary>
-    /// Azure Static Web Apps / Functions front doors set X-Forwarded-For to "client, proxy1, proxy2...";
-    /// the first entry is the original client.
-    /// </summary>
     private static string GetClientIp(HttpRequestData req)
     {
-        if (req.Headers.TryGetValues("X-Forwarded-For", out var forwardedFor))
-        {
-            var first = forwardedFor.FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(first))
-            {
-                return first.Split(',')[0].Trim();
-            }
-        }
-
-        return "unknown";
+        req.Headers.TryGetValues("X-Forwarded-For", out var forwardedFor);
+        return ClientIpResolver.Resolve(forwardedFor);
     }
 }

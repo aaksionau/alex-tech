@@ -7,9 +7,11 @@ public enum RateLimitReason
     SiteWideCapExceeded,
 }
 
-public sealed record RateLimitDecision(bool Allowed, RateLimitReason Reason)
+public sealed record RateLimitDecision(RateLimitReason Reason)
 {
-    public static RateLimitDecision Allow() => new(true, RateLimitReason.None);
+    public bool Allowed => Reason == RateLimitReason.None;
 
-    public static RateLimitDecision Deny(RateLimitReason reason) => new(false, reason);
+    public static RateLimitDecision Allow() => new(RateLimitReason.None);
+
+    public static RateLimitDecision Deny(RateLimitReason reason) => new(reason);
 }
