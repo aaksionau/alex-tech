@@ -1,37 +1,41 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LatestPosts from '../components/LatestPosts.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 
 <Layout title="Home">
   <section class="flex min-h-[70vh] flex-col justify-center gap-6">
-    <p class="font-mono text-sm text-(--color-accent)">.NET · Azure · AI</p>
+    <img
+      src="https://aaksionau.github.io/img/aaksionau_profile.jpg"
+      alt="Aliaksei Aksionau"
+      width="64"
+      height="64"
+      class="h-16 w-16 rounded-full border border-border object-cover"
+    />
+    <p class="font-mono text-sm text-accent">.NET · Azure · Event-Driven Systems · Applied AI</p>
     <h1 class="font-heading text-4xl font-semibold sm:text-5xl">
-      Hi, I&rsquo;m Alex — a software engineer building on Azure.
+      Hi, I&rsquo;m Aliaksei — a senior full-stack engineer building on Azure.
     </h1>
-    <p class="max-w-xl text-lg text-(--color-muted)">
-      I design and ship production systems on .NET and Azure, with a growing focus on applied AI.
-      This site is itself an example: an Astro frontend, Azure Functions API, and Azure AI Foundry
-      voice bot you can talk to about my experience.
+    <p class="max-w-xl text-lg text-muted">
+      I&rsquo;m a full-stack engineer with 10+ years on .NET and Azure, recently focused on
+      event-driven systems (Kafka, Elasticsearch) and applied AI.
     </p>
-    <div class="flex gap-4 text-sm">
-      <a
-        href="https://github.com/aaksionau"
-        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
-      >
-        GitHub
-      </a>
-      <a
-        href="https://www.linkedin.com/in/aliaksei-aksionau/"
-        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
-      >
-        LinkedIn
-      </a>
-      <a
-        href="/about"
-        class="rounded-md bg-(--color-accent) px-4 py-2 text-(--color-accent-foreground)"
-      >
+    <div class="flex flex-wrap items-center gap-4 text-sm">
+      <SocialLinks />
+      <a href="/about" class="rounded-md bg-accent px-4 py-2 text-accent-foreground">
         About me
+      </a>
+      <a
+        href="/talk"
+        class="flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+          <path
+            d="M12 2C6.48 2 2 5.94 2 10.8c0 2.76 1.44 5.22 3.7 6.83-.12.99-.5 2.4-1.55 3.87a.5.5 0 0 0 .55.78c2.06-.55 3.68-1.5 4.72-2.24.83.16 1.7.24 2.58.24 5.52 0 10-3.94 10-8.8S17.52 2 12 2z"
+          ></path>
+        </svg>
+        Talk to my digital self
       </a>
     </div>
   </section>

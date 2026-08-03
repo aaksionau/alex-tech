@@ -1,33 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 
-<Layout title="About">
-  <section class="flex flex-col gap-6 py-16">
-    <h1 class="font-heading text-3xl font-semibold">About</h1>
-    <p class="text-(--color-muted)">
-      I&rsquo;m Alex, a software engineer focused on .NET, Azure, and applied AI. I build
-      production systems end to end — APIs, cloud infrastructure, and lately the model-facing
-      layer on top of them — and I like when the tools I use to build something double as proof
-      that I know how they work.
-    </p>
-    <p class="text-(--color-muted)">
-      This site is one example: an Astro frontend on Azure Static Web Apps, a C# Azure Functions
-      API, and a voice bot backed by Azure AI Foundry that you can talk to about my experience.
-    </p>
-    <div class="flex gap-4 pt-4 text-sm">
-      <a
-        href="https://github.com/aaksionau"
-        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
-      >
-        GitHub
-      </a>
-      <a
-        href="https://www.linkedin.com/in/aliaksei-aksionau/"
-        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
-      >
-        LinkedIn
-      </a>
+<Layout
+  title="About"
+  description="Aliaksei Aksionau — Senior Full-Stack Engineer specializing in .NET, Azure, event-driven systems, and applied AI."
+>
+  <section class="flex flex-col gap-10 py-16">
+    <div class="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+      <img
+        src="https://aaksionau.github.io/img/aaksionau_profile.jpg"
+        alt="Aliaksei Aksionau"
+        width="128"
+        height="128"
+        class="h-32 w-32 shrink-0 rounded-full border border-border object-cover"
+      />
+      <div class="flex flex-col gap-2">
+        <h1 class="font-heading text-3xl font-semibold">Aliaksei Aksionau</h1>
+        <p class="text-accent">
+          Senior Full-Stack Engineer · .NET & Azure · Event-Driven Systems · Applied AI
+        </p>
+      </div>
     </div>
+
+    <div class="flex flex-col gap-4 text-base leading-relaxed text-muted">
+      <p>
+        I&rsquo;m a full-stack engineer with 10+ years building on .NET and Azure, recently
+        focused on event-driven systems (Kafka, Elasticsearch) and applied AI &mdash; Azure
+        OpenAI, multi-agent workflows, and retrieval-augmented generation. I work comfortably
+        across React and Angular front ends, .NET APIs, and Azure infrastructure, and I enjoy
+        mentoring engineers along the way.
+      </p>
+      <p>
+        This site is one example: an Astro frontend on Azure Static Web Apps, a C# Azure
+        Functions API, and a voice bot backed by Azure AI Foundry that you can talk to about my
+        experience.
+      </p>
+    </div>
+
+    <SocialLinks />
   </section>
 </Layout>
