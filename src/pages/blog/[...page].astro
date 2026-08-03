@@ -1,0 +1,51 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return paginate(posts, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Layout title="Blog" description="Posts on .NET, Azure, and applied AI.">
+  <section class="flex flex-col gap-4 py-16">
+    <p class="font-mono text-sm text-(--color-accent)">Writing</p>
+    <h1 class="font-heading text-3xl font-semibold sm:text-4xl">Blog</h1>
+  </section>
+  <section class="flex flex-col gap-8 pb-16">
+    {
+      page.data.length === 0 ? (
+        <p class="text-(--color-muted)">No posts yet — check back soon.</p>
+      ) : (
+        page.data.map((post) => <PostCard post={post} />)
+      )
+    }
+  </section>
+  {
+    (page.url.prev || page.url.next) && (
+      <nav class="flex justify-between pb-24 text-sm text-(--color-muted)">
+        {page.url.prev ? (
+          <a href={page.url.prev} class="hover:text-(--color-accent)">
+            &larr; Newer posts
+          </a>
+        ) : (
+          <span />
+        )}
+        {page.url.next ? (
+          <a href={page.url.next} class="hover:text-(--color-accent)">
+            Older posts &rarr;
+          </a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )
+  }
+</Layout>

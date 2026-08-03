@@ -51,3 +51,45 @@ h5,
 h6 {
   font-family: var(--font-heading);
 }
+
+.blog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  line-height: 1.75;
+}
+
+.blog-content h2,
+.blog-content h3 {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+.blog-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.blog-content code {
+  background-color: var(--color-surface);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.9em;
+}
+
+.blog-content pre {
+  background-color: var(--color-surface);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.blog-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.5rem;
+}
