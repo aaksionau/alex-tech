@@ -63,7 +63,12 @@ public class RealtimeSessionFunction
                 upstreamResponse.StatusCode,
                 upstreamBody);
             var errorResponse = req.CreateResponse(HttpStatusCode.BadGateway);
-            await errorResponse.WriteAsJsonAsync(new { error = "Failed to mint realtime session token." });
+            await errorResponse.WriteAsJsonAsync(new
+            {
+                error = "Failed to mint realtime session token.",
+                debugUpstreamStatus = (int)upstreamResponse.StatusCode,
+                debugUpstreamBody = upstreamBody.Length > 500 ? upstreamBody[..500] : upstreamBody
+            });
             return errorResponse;
         }
 
