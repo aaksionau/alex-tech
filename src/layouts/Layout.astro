@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import SystemBackground from '../components/SystemBackground.astro';
 
 interface Props {
   title: string;
@@ -8,6 +9,17 @@ interface Props {
 }
 
 const { title, description = 'Alex — .NET, Azure, and AI software engineer.' } = Astro.props;
+
+const navItems = [
+  { href: '/experience', label: 'Experience' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/talk', label: 'Talk' },
+  { href: '/about', label: 'About' },
+];
+
+const { pathname } = Astro.url;
+const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 ---
 
 <!doctype html>
@@ -28,15 +40,24 @@ const { title, description = 'Alex — .NET, Azure, and AI software engineer.' }
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
+    <SystemBackground />
     <header class="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
       <a href="/" class="font-heading text-lg font-semibold">Alex</a>
       <nav class="flex items-center gap-6 text-sm text-(--color-muted)">
-        <a href="/experience" class="hover:text-(--color-foreground)">Experience</a>
-        <a href="/projects" class="hover:text-(--color-foreground)">Projects</a>
-        <a href="/blog" class="hover:text-(--color-foreground)">Blog</a>
-        <a href="/talk" class="hover:text-(--color-foreground)">Talk</a>
-        <a href="/about" class="hover:text-(--color-foreground)">About</a>
-        <a href="https://github.com/aaksionau" class="hover:text-(--color-foreground)">GitHub</a>
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'hover:text-(--color-foreground)',
+                isActive(item.href) && 'font-medium text-(--color-foreground)',
+              ]}
+            >
+              {item.label}
+            </a>
+          ))
+        }
         <ThemeToggle />
       </nav>
     </header>
