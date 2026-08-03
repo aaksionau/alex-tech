@@ -1,0 +1,119 @@
+{
+  "roles": [
+    {
+      "id": "ilm-professional-services",
+      "company": "ILM Professional Services",
+      "title": "Consultant",
+      "startDate": "2022-08",
+      "endDate": null,
+      "location": null,
+      "achievements": [],
+      "tech": [],
+      "engagements": [
+        {
+          "client": "University of Minnesota",
+          "startDate": "2025-10",
+          "endDate": "2026-04",
+          "achievements": [
+            "Built a multi-agent NL-to-SQL pipeline (Azure OpenAI, Microsoft Agent Framework) with validation safeguards, sandboxed execution, and structured outputs.",
+            "Built an LLM-as-judge evaluation framework with Azure AI Foundry/App Insights telemetry to track SQL-generation accuracy.",
+            "Automated UI/API deployments to Azure App Service and Static Web Apps via Azure DevOps."
+          ],
+          "tech": [
+            "Azure OpenAI",
+            "Microsoft Agent Framework",
+            "Azure AI Foundry",
+            "Application Insights",
+            "Azure App Service",
+            "Azure Static Web Apps",
+            "Azure DevOps"
+          ]
+        },
+        {
+          "client": "CH Robinson",
+          "startDate": "2022-08",
+          "endDate": "2025-10",
+          "achievements": [
+            "Improved logistics search platforms (.NET, React, Kafka, ElasticSearch) processing high-volume order/shipment event streams.",
+            "Designed ElasticSearch data models and location-based filtering/permissions; built a React/MongoDB custom-filters feature for admins.",
+            "Migrated a legacy .NET Framework 4.6.2 API to .NET 8 and led the Bing Maps → Azure Maps migration (SAS auth, Terraform).",
+            "Modernized the Orders Search UX (filters, map views, guided onboarding) and built a CSV-based user-onboarding automation tool."
+          ],
+          "tech": [
+            ".NET",
+            "React",
+            "Kafka",
+            "ElasticSearch",
+            "MongoDB",
+            ".NET Framework 4.6.2",
+            ".NET 8",
+            "Azure Maps",
+            "Terraform"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "benafica",
+      "company": "Benafica",
+      "title": "Software Developer",
+      "startDate": "2020-01",
+      "endDate": "2022-08",
+      "location": null,
+      "achievements": [
+        "Built an ASP.NET MVC portal for employees, agents, employers, and agencies, reducing manual data-submission work.",
+        "Developed BenngiHealth, a cross-platform app (Xamarin.Forms) with Azure services and Azure DevOps CI/CD.",
+        "Implemented SSO with IdentityServer4 (OAuth 2.0 / OIDC) on .NET 6 and supported a legacy WebForms CRM."
+      ],
+      "tech": ["ASP.NET MVC", "Xamarin.Forms", "Azure DevOps", "IdentityServer4", "OAuth 2.0 / OIDC", ".NET 6", "WebForms"]
+    },
+    {
+      "id": "kontaktmission",
+      "company": "KontaktMission USA",
+      "title": "Missionary",
+      "startDate": "2014",
+      "endDate": "2019",
+      "location": "Ukraine",
+      "achievements": [
+        "Built non-profit websites (Django), including the Ukrainian Baptist Union site, growing traffic 50%."
+      ],
+      "tech": ["Django"]
+    },
+    {
+      "id": "kharkiv-web-developer",
+      "company": null,
+      "title": "Web Developer",
+      "startDate": "2012",
+      "endDate": "2014",
+      "location": "Kharkiv, Ukraine",
+      "achievements": [
+        "Built C#/JS import-export tooling inside the QP8 CMS."
+      ],
+      "tech": ["C#", "JavaScript"]
+    },
+    {
+      "id": "quantumart-kharkiv",
+      "company": "QuantumArt",
+      "title": "Technical Leader",
+      "startDate": "2009",
+      "endDate": "2012",
+      "location": "Kharkiv",
+      "achievements": [
+        "Led architecture for a large movie-theater chain's website; hired and mentored developers."
+      ],
+      "tech": []
+    },
+    {
+      "id": "quantumart-st-petersburg",
+      "company": "QuantumArt",
+      "title": "Web Developer",
+      "startDate": "2007",
+      "endDate": "2009",
+      "location": "St. Petersburg",
+      "achievements": [
+        "Supported 20+ production sites on ASP.NET WebForms."
+      ],
+      "tech": ["ASP.NET WebForms"]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.svelte';
+import experience from '../data/experience.json';
+---
+
+<Layout title="Experience" description="Alex's career timeline — roles, clients, and the tech behind them.">
+  <section class="flex flex-col gap-4 py-16">
+    <p class="font-mono text-sm text-(--color-accent)">Career</p>
+    <h1 class="font-heading text-3xl font-semibold sm:text-4xl">Experience</h1>
+    <p class="max-w-xl text-(--color-muted)">
+      A role-by-role look at the last two decades, from ASP.NET WebForms to multi-agent AI
+      pipelines on Azure.
+    </p>
+  </section>
+  <section class="pb-24">
+    <ExperienceTimeline roles={experience.roles} client:visible />
+  </section>
+</Layout>
