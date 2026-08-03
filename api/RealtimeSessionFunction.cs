@@ -32,6 +32,8 @@ public class RealtimeSessionFunction
         var apiKey = _configuration["Foundry:ApiKey"];
         var deployment = _configuration["Foundry:Deployment"] ?? "gpt-realtime-mini";
         var apiVersion = _configuration["Foundry:ApiVersion"] ?? "2025-04-01-preview";
+        var region = _configuration["Foundry:Region"] ?? "eastus2";
+        var voice = _configuration["Foundry:Voice"] ?? "verse";
 
         if (string.IsNullOrWhiteSpace(endpoint) || string.IsNullOrWhiteSpace(apiKey))
         {
@@ -47,7 +49,7 @@ public class RealtimeSessionFunction
         using var upstreamRequest = new HttpRequestMessage(HttpMethod.Post, sessionUrl)
         {
             Content = new StringContent(
-                JsonSerializer.Serialize(new { model = deployment }),
+                JsonSerializer.Serialize(new { model = deployment, voice }),
                 Encoding.UTF8,
                 "application/json")
         };
@@ -76,7 +78,10 @@ public class RealtimeSessionFunction
             value = clientSecret.GetProperty("value").GetString(),
             expiresAt = clientSecret.GetProperty("expires_at").GetInt64(),
             endpoint,
-            deployment
+            deployment,
+            // The WebRTC connect URL is a region-specific host (<region>.realtimeapi-preview.ai.azure.com),
+            // independent of the Foundry resource's own endpoint, so the client needs it separately.
+            region
         });
         return response;
     }
