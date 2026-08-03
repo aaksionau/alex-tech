@@ -41,7 +41,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
   </head>
   <body class="min-h-screen font-sans antialiased">
     <SystemBackground />
-    <header class="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
+    <header class="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
       <a href="/" class="font-heading text-lg font-semibold">Alex</a>
       <nav class="flex items-center gap-6 text-sm text-(--color-muted)">
         {
@@ -61,7 +61,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
         <ThemeToggle />
       </nav>
     </header>
-    <main class="mx-auto max-w-3xl px-6 pb-20">
+    <main class="mx-auto max-w-4xl px-6 pb-20">
       <slot />
     </main>
   </body>
