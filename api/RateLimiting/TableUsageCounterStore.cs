@@ -18,8 +18,8 @@ public sealed class TableUsageCounterStore : IUsageCounterStore
 
     public TableUsageCounterStore(IConfiguration configuration)
     {
-        var connectionString = configuration["AzureWebJobsStorage"]
-            ?? throw new InvalidOperationException("AzureWebJobsStorage is not configured.");
+        var connectionString = configuration["AzureBlogStorage"]
+            ?? throw new InvalidOperationException("AzureBlogStorage is not configured.");
 
         _serviceClient = new TableServiceClient(connectionString);
         _tableClient = new Lazy<Task<TableClient>>(EnsureTableExistsAsync);
