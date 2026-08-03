@@ -24,7 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # .NET / Azure Functions
-api/bin/
-api/obj/
+api/**/bin/
+api/**/obj/
 api/local.settings.json
 
