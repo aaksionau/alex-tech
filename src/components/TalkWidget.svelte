@@ -3,8 +3,8 @@
 
   /** @typedef {{ id: string, role: 'user' | 'assistant', text: string }} TranscriptEntry */
 
-  /** @type {{ roles: import('../lib/systemPrompt.js').Role[], years: import('../lib/systemPrompt.js').YearGroup[] }} */
-  let { roles, years } = $props();
+  /** @type {{ roles: import('../lib/systemPrompt.js').Role[], years: import('../lib/systemPrompt.js').YearGroup[], profile: import('../lib/systemPrompt.js').Profile }} */
+  let { roles, years, profile } = $props();
 
   /** @type {'idle' | 'connecting' | 'active' | 'ended' | 'timed-out' | 'error' | 'capped'} */
   let status = $state('idle');
@@ -209,7 +209,7 @@
         JSON.stringify({
           type: 'session.update',
           session: {
-            instructions: buildSystemInstructions(roles, years),
+            instructions: buildSystemInstructions(roles, years, profile),
             input_audio_transcription: { model: 'whisper-1' },
           },
         }),

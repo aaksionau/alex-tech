@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import TalkWidget from '../components/TalkWidget.svelte';
 import experience from '../data/experience.json';
 import projects from '../data/projects.json';
+import profile from '../data/profile.json';
 ---
 
 <Layout
@@ -18,6 +19,6 @@ import projects from '../data/projects.json';
     </p>
   </section>
   <section class="pb-24">
-    <TalkWidget roles={experience.roles} years={projects.years} client:load />
+    <TalkWidget roles={experience.roles} years={projects.years} profile={profile} client:load />
   </section>
 </Layout>

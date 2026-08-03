@@ -1,0 +1,50 @@
+{
+  "location": "Cottage Grove, MN",
+  "education": [
+    {
+      "degree": "BS in Chemistry of Natural Compounds",
+      "institution": "St. Petersburg State University, Russia",
+      "startDate": "1999-09",
+      "endDate": "2004-05"
+    }
+  ],
+  "certifications": [
+    { "name": "AZ-400: DevOps Solutions", "year": 2025 },
+    { "name": "AZ-204: Azure Developer Associate", "year": 2024 },
+    { "name": "AZ-900: Azure Fundamentals", "year": 2023 }
+  ],
+  "languages": [
+    { "language": "English", "proficiency": "fluent" },
+    { "language": "Russian", "proficiency": "native" }
+  ],
+  "skills": {
+    "Languages": ["C#", "TypeScript/JavaScript", "SQL", "Python"],
+    "Front End": ["React", "Angular", "Razor Pages"],
+    ".NET & Backend": [".NET (Framework through .NET 10)", "ASP.NET Core", "Web API", "EF Core", "Dapper", "Node.js"],
+    "Event-Driven & Search": ["Kafka", "ElasticSearch", "Hangfire"],
+    "AI & Applied ML": [
+      "Azure OpenAI",
+      "Azure AI Foundry",
+      "Microsoft Agent Framework",
+      "embeddings & vector search (pgvector)",
+      "RAG",
+      "LLM-as-judge evaluation",
+      "structured outputs"
+    ],
+    "Cloud & DevOps": [
+      "Azure App Service",
+      "Azure Functions",
+      "Azure Static Web Apps",
+      "Azure Storage",
+      "Azure Maps",
+      "Azure DevOps",
+      "GitHub Actions",
+      "Terraform",
+      "CI/CD"
+    ],
+    "Data": ["MSSQL", "PostgreSQL", "MongoDB", "Azure Data Tables"],
+    "Identity & Auth": ["IdentityServer4", "JWT", "OAuth 2.0 / OIDC"],
+    "Monitoring": ["Azure Application Insights", "DataDog", "ElasticSearch"],
+    "Tools": ["Visual Studio", "VS Code", "Git"]
+  }
+}
