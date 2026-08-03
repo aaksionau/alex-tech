@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About">
+  <section class="flex flex-col gap-6 py-16">
+    <h1 class="font-heading text-3xl font-semibold">About</h1>
+    <p class="text-(--color-muted)">
+      I&rsquo;m Alex, a software engineer focused on .NET, Azure, and applied AI. I build
+      production systems end to end — APIs, cloud infrastructure, and lately the model-facing
+      layer on top of them — and I like when the tools I use to build something double as proof
+      that I know how they work.
+    </p>
+    <p class="text-(--color-muted)">
+      This site is one example: an Astro frontend on Azure Static Web Apps, a C# Azure Functions
+      API, and a voice bot backed by Azure AI Foundry that you can talk to about my experience.
+    </p>
+    <div class="flex gap-4 pt-4 text-sm">
+      <a
+        href="https://github.com/aaksionau"
+        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
+      >
+        GitHub
+      </a>
+      <a
+        href="#"
+        data-todo="replace with real LinkedIn profile URL"
+        class="rounded-md border border-(--color-border) px-4 py-2 hover:border-(--color-accent)"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </section>
+</Layout>

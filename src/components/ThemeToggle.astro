@@ -1,0 +1,29 @@
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  class="rounded-md border border-(--color-border) px-2 py-1 text-xs text-(--color-muted) hover:text-(--color-foreground)"
+>
+  <span id="theme-toggle-label">dark</span>
+</button>
+
+<script is:inline>
+  (function () {
+    const button = document.getElementById('theme-toggle');
+    const label = document.getElementById('theme-toggle-label');
+    const root = document.documentElement;
+
+    function sync() {
+      label.textContent = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+
+    button.addEventListener('click', function () {
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      sync();
+    });
+
+    sync();
+  })();
+</script>

@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Alex — .NET, Azure, and AI software engineer.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} · Alex</title>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen font-sans antialiased">
+    <header class="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
+      <a href="/" class="font-heading text-lg font-semibold">Alex</a>
+      <nav class="flex items-center gap-6 text-sm text-(--color-muted)">
+        <a href="/about" class="hover:text-(--color-foreground)">About</a>
+        <a href="https://github.com/aaksionau" class="hover:text-(--color-foreground)">GitHub</a>
+        <ThemeToggle />
+      </nav>
+    </header>
+    <main class="mx-auto max-w-3xl px-6 pb-20">
+      <slot />
+    </main>
+  </body>
+</html>

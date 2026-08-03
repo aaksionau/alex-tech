@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/space-grotesk';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--color-background-current);
+  --color-foreground: var(--color-foreground-current);
+  --color-muted: var(--color-muted-current);
+  --color-border: var(--color-border-current);
+  --color-surface: var(--color-surface-current);
+  --color-accent: var(--color-accent-current);
+  --color-accent-foreground: var(--color-accent-foreground-current);
+}
+
+/* Dark palette is the default, applied regardless of OS preference. */
+:root,
+:root[data-theme='dark'] {
+  --color-background-current: #0a0e14;
+  --color-foreground-current: #e6e9ef;
+  --color-muted-current: #8b93a7;
+  --color-border-current: #1f2530;
+  --color-surface-current: #10141d;
+  --color-accent-current: #5eead4;
+  --color-accent-foreground-current: #0a0e14;
+}
+
+:root[data-theme='light'] {
+  --color-background-current: #ffffff;
+  --color-foreground-current: #0f1420;
+  --color-muted-current: #5b6472;
+  --color-border-current: #e2e5eb;
+  --color-surface-current: #f6f7f9;
+  --color-accent-current: #0d9488;
+  --color-accent-foreground-current: #ffffff;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
