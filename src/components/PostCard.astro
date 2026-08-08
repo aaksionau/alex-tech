@@ -13,13 +13,13 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 });
 ---
 
-<article class="flex flex-col gap-2 border-b border-(--color-border) pb-8">
-  <a href={`/blog/${post.id}`} class="group flex flex-col gap-2">
+<article class="group flex flex-col gap-3 rounded-xl border border-(--color-border) bg-(--color-surface) p-5 transition-all hover:-translate-y-0.5 hover:border-(--color-accent) hover:shadow-lg hover:shadow-black/5">
+  <a href={`/blog/${post.id}`} class="flex flex-col gap-2">
     <p class="font-mono text-xs text-(--color-muted)">{formattedDate}</p>
-    <h2 class="font-heading text-xl font-semibold group-hover:text-(--color-accent)">
+    <h2 class="font-heading text-lg font-semibold group-hover:text-(--color-accent)">
       {post.data.title}
     </h2>
-    <p class="text-(--color-muted)">{post.data.description}</p>
+    <p class="text-sm text-(--color-muted)">{post.data.description}</p>
   </a>
   {
     post.data.tags.length > 0 && (

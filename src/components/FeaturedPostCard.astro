@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-surface) p-6 transition-all hover:border-(--color-accent) hover:shadow-xl hover:shadow-black/5 sm:p-8">
+  <div class="absolute inset-x-0 top-0 h-1 bg-(--color-accent)"></div>
+  <a href={`/blog/${post.id}`} class="flex flex-col gap-3">
+    <div class="flex items-center gap-3">
+      <span class="rounded-full border border-(--color-accent) px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wide text-(--color-accent)">
+        Latest
+      </span>
+      <p class="font-mono text-xs text-(--color-muted)">{formattedDate}</p>
+    </div>
+    <h2 class="font-heading text-2xl font-semibold sm:text-3xl group-hover:text-(--color-accent)">
+      {post.data.title}
+    </h2>
+    <p class="max-w-2xl text-(--color-muted)">{post.data.description}</p>
+    <span class="inline-flex items-center gap-1 text-sm font-medium text-(--color-accent)">
+      Read article
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </span>
+  </a>
+  {
+    post.data.tags.length > 0 && (
+      <ul class="flex flex-wrap gap-2">
+        {post.data.tags.map((tag) => (
+          <li class="rounded-full border border-(--color-border) px-2 py-0.5 font-mono text-xs text-(--color-muted)">
+            {tag}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>

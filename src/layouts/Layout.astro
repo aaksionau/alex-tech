@@ -6,9 +6,15 @@ import SystemBackground from '../components/SystemBackground.astro';
 interface Props {
   title: string;
   description?: string;
+  wide?: boolean;
 }
 
-const { title, description = 'Alex — .NET, Azure, and AI software engineer.' } = Astro.props;
+const {
+  title,
+  description = 'Alex — .NET, Azure, and AI software engineer.',
+  wide = false,
+} = Astro.props;
+const containerWidth = wide ? 'max-w-6xl' : 'max-w-4xl';
 
 const navItems = [
   { href: '/experience', label: 'Experience' },
@@ -41,7 +47,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
   </head>
   <body class="min-h-screen font-sans antialiased">
     <SystemBackground />
-    <header class="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
+    <header class:list={['mx-auto flex items-center justify-between px-6 py-6', containerWidth]}>
       <a href="/" class="font-heading text-lg font-semibold">Alex</a>
       <nav class="flex items-center gap-6 text-sm text-(--color-muted)">
         {
@@ -61,7 +67,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
         <ThemeToggle />
       </nav>
     </header>
-    <main class="mx-auto max-w-4xl px-6 pb-20">
+    <main class:list={['mx-auto px-6 pb-20', containerWidth]}>
       <slot />
     </main>
   </body>
