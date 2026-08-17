@@ -39,8 +39,8 @@ Azure App Service does not ship with the ODBC driver that Python's pyodbc and ai
 Using ASP.NET deployment to Azure is an easy task, it turns out that it's not the case with FastAPI. Without usage of containers, it took about 10 minutes just to pack/unpack python code (with a use of Oryx Build Engine). As it was not acceptable, we needed to introduce containers, which was not ideal.
 
 ## Why i'm writing about this 
-After the project was done, i wanted to double check how much effort it will take to rewrite the full app (backend part) using .net and C#.
-It turns out that with MAF (Microsoft Agent Framework), it's quite easy. So i want to spend some time to write about usage of MAF. Microsoft released a stable version in April of 2026, so it's still new, but not that many changes as it was a year ago.
+After the project was done, i wanted to check how much effort it will take to rewrite the full app (backend part) using .net, C# and MAF (Microsoft Agent Framework). It turns out that it's easier then using FastAPI.
+Microsoft released a stable version of MAF in April of 2026. It has a lot of options and i wanted to go deeper. Because of that i will write set of articles about using MAF and connected tools (Azure Foundry, MCP...).
 
 My lesson from this experience - unless there is known Python libraries that project needs or if there is a need in particular Python Agent framework (CrewAI, LangGraph...), otherwise it's better to write AI-enabled app using C#, .NET. 
 
