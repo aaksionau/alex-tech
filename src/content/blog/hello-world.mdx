@@ -1,9 +1,61 @@
 ---
-title: 'Hello, world'
-description: 'Placeholder post confirming the blog content collection is wired up.'
-date: 2026-08-03
-tags: ['meta']
+title: 'FastAPI vs ASP.NET Core: what we learned building an NL-SQL tool in Python'
+description: "What building an AI app in FastAPI taught us about switching to ASP.NET Core"
+date: 2026-08-17
+tags: ['AI', 'Azure', 'Python', 'C#', '.NET', 'MAF']
 draft: false
 ---
 
-This is a placeholder post. Real posts get migrated from the old Docusaurus blog in a later issue.
+Couple months ago our team was asked to develop NL-SQL tool to enable researchers to ask questions to get either simple answers and get dataset from database.
+We haven't built AI-enabled apps before. For that reason Python looks a solid choice, as its de-facto language to work with AI. Today exist variety of frameworks built on Python. So it should be easy, at least we thought so.
+In my previous experience i used Python only to work on Django projects, and honestly i liked it.
+
+As we chose Python as a language, next task was to choose tool for the api. FastAPI seemed like a good solution. Simple, easy to use. Here is what we ran into...
+{/* truncate */}
+
+## What we ran into.
+Nothing was dramatic, at the same time it was a pile of items that i want to point out here.
+
+**Dependency Injection**
+FastAPI has dependency injection, but it's limited compare to what .NET gives you out of the box. It requires more by-hand work, when DI in .NET handles all of it for you.
+IServiceCollection and constructor injection provides lifetime and scope from the start, when in FastAPI every time you need to think about providing instance of that dependency.
+
+**Middleware**
+It was similar story. You can add logging, authentication, and error handling in FastAPI, but the composition model is looser than ASP.NET Core's middleware pipeline. We ended up writing glue code that .NET would have handed us for free.
+
+**Async/await**
+This surprised us the most, specially when working with pyodbc. Initially we wrote everything in synchronous fashion, as there was no need for async work. But later due to unoptimized database tables, we wanted to switch to asynchronous.
+It turned out that you can not just add async / await to the methods, you need to use different methods for that. As i dive deeper, there was more to that. Python's asyncio gives you the syntax, but underneath it is cooperative multitasking on a single-threaded event loop, not real parallelism.
+
+In C# and entity framework switching from sync to async (when using EF) is quite easy, just add async/await and rename the methods (add Async on the end). Plus async/await sits on top of the thread pool and you can just let the runtime handle the scheduling.
+
+**Database migrations**
+It took more work than I expected. Alembic is the standard tool in the Python and SQLAlchemy world, but setting it up is not trivial. You wire up alembic.ini, hand-edit env.py to point at your models, and then babysit the auto-generated scripts, which are often wrong or incomplete and need fixing by hand. With EF Core, migrations come down to two commands: dotnet ef migrations add and dotnet ef database update. It reads your database schema and produces code that is relevant for the update.
+
+**SQL Server Connectivity**
+Azure App Service does not ship with the ODBC driver that Python's pyodbc and aioodbc need to reach MSSQL. So we had to add a startup script and a custom extension just to open a database connection. That is a lot of plumbing for something that should be trivial. In .NET, Microsoft.Data.SqlClient is fully managed, has no native dependencies, and simply works on App Service.
+
+**Azure Deployment**
+Using ASP.NET deployment to Azure is an easy task, it turns out that it's not the case with FastAPI. Without usage of containers, it took about 10 minutes just to pack/unpack python code (with a use of Oryx Build Engine). As it was not acceptable, we needed to introduce containers, which was not ideal.
+
+## Why i'm writing about this 
+After the project was done, i wanted to double check how much effort it will take to rewrite the full app (backend part) using .net and C#.
+It turns out that with MAF (Microsoft Agent Framework), it's quite easy. So i want to spend some time to write about usage of MAF. Microsoft released a stable version in April of 2026, so it's still new, but not that many changes as it was a year ago.
+
+My lesson from this experience - unless there is known Python libraries that project needs or if there is a need in particular Python Agent framework (CrewAI, LangGraph...), otherwise it's better to write AI-enabled app using C#, .NET. 
+
+
+## What's Coming
+
+This is the first in a series on my work with C# and the Microsoft Agent Framework:
+
+1. **Building your first AI agent in C#** — setting up Microsoft Agent Framework and wiring your first agent
+2. **Creating custom tools for agents** — what tools are, how agents decide to use them, and how to design ones that work reliably
+3. **Extending agents with MCP** — what the Model Context Protocol is, how to connect your agent to MCP servers, and when to use MCP over custom tools
+4. **Connecting agents to SQL databases** — using a tool to give an agent structured data access, with schema awareness and safe query patterns
+5. **Orchestrating multiple specialized agents** — splitting responsibilities across agents and coordinating them
+6. **Embeddings and Azure AI Search** — how embeddings work, building a vector index, and wiring semantic search into an agent
+7. **Retrieval-Augmented Generation (RAG)** — chunking documents, storing embeddings, and building an agent that answers from your own data
+8. **Deploying AI applications to production** — packaging, configuration, monitoring, and the lessons that only show up in prod
+
+I'm a quite practical person, so in every post i will provide code that works.
